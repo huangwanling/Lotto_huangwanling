@@ -24,6 +24,8 @@ import tw.edu.pu.csim.tcyang.lotto.ui.theme.LottoTheme
 
 import androidx.compose.runtime.setValue // 引入 setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 
 
 class MainActivity : ComponentActivity() {
@@ -44,19 +46,29 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Play(modifier: Modifier = Modifier) {
-    //var lucky = (1..100).random()
+    // 儲存樂透號碼的狀態
     var lucky by remember {
         mutableStateOf((1..100).random())
     }
 
-    val context = LocalContext.current //取得當前 Context
+    // 取得當前 Context，以便顯示 Toast 訊息
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .clickable {
-                Toast.makeText(context, text = "螢幕觸控(黃婉凌)", duration = Toast.LENGTH_SHORT)
-                    .show()
+            .pointerInput(Unit) { // 使用 pointerInput 監聽觸控事件
+                detectTapGestures(
+                    onTap = { offset ->
+                        // 取得觸控的 x 和 y 座標
+                        val x = offset.x
+                        val y = offset.y
+
+                        // 格式化座標字串，顯示到小數點後兩位
+                        val toastText = "X: ${"%.2f".format(x)}, Y: ${"%.2f".format(y)}"
+                        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
+                    }
+                )
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -71,7 +83,7 @@ fun Play(modifier: Modifier = Modifier) {
             Text("重新產生樂透碼")
         }
 
-    Text(text = "黃婉凌個人共同編輯程式")
+        Text(text = "黃婉凌個人共同編輯程式")
 
     }
 }
