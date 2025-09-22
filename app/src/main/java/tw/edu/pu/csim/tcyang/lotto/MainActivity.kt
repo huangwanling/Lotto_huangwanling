@@ -71,7 +71,7 @@ fun Play(modifier: Modifier = Modifier) {
             Text("重新產生樂透碼")
         }
 
-    Text(text = "黃婉凌共同編輯程式")
+    Text(text = "黃婉凌個人共同編輯程式")
 
     }
 }
