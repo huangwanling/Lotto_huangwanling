@@ -51,14 +51,16 @@ fun Play(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current //取得當前 Context
 
-    Column (modifier = modifier
-        .fillMaxSize()
-        .clickable{
-            Toast.makeText(context, text="螢幕觸控(黃婉凌)", duration=Toast.LENGTH_SHORT).show()
-        },
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable {
+                Toast.makeText(context, text = "螢幕觸控(黃婉凌)", duration = Toast.LENGTH_SHORT)
+                    .show()
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-        ){
+    ) {
         Text(
             text = "樂透數字(1-100)為 $lucky"
         )
@@ -68,8 +70,8 @@ fun Play(modifier: Modifier = Modifier) {
         ) {
             Text("重新產生樂透碼")
         }
+
+    Text(text = "黃婉凌共同編輯程式")
+
     }
-
-
-
 }
