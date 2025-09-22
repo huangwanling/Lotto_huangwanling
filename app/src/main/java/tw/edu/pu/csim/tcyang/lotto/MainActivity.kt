@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import tw.edu.pu.csim.tcyang.lotto.ui.theme.LottoTheme
+
+import androidx.compose.runtime.setValue // 引入 setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,18 +54,17 @@ fun Play(modifier: Modifier = Modifier) {
     // 取得當前 Context，以便顯示 Toast 訊息
     val context = LocalContext.current
 
-    // 將第一個 pointerInput 應用在 Column 上，用來處理背景觸控
     Column(
         modifier = modifier
             .fillMaxSize()
-            .pointerInput(Unit) {
+            .pointerInput(Unit) { // 使用 pointerInput 監聽觸控事件
                 detectTapGestures(
                     onTap = { offset ->
                         // 取得觸控的 x 和 y 座標
                         val x = offset.x
                         val y = offset.y
 
-                        // 格式化座標字串，並顯示為 Toast
+                        // 格式化座標字串，顯示到小數點後兩位
                         val toastText = "X: ${"%.2f".format(x)}, Y: ${"%.2f".format(y)}"
                         Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                     }
@@ -72,20 +74,7 @@ fun Play(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "樂透數字(1-100)為 $lucky",
-            // 將第二個 pointerInput 獨立應用在 Text 上，用來處理數字加減
-            modifier = Modifier.pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = {
-                        // 短按時，數字減1，並確保不小於1
-                        lucky = (lucky - 1).coerceAtLeast(1)
-                    },
-                    onLongPress = {
-                        // 長按時，數字加1，並確保不大於100
-                        lucky = (lucky + 1).coerceAtMost(100)
-                    }
-                )
-            }
+            text = "樂透數字(1-100)為 $lucky"
         )
 
         Button(
@@ -95,5 +84,6 @@ fun Play(modifier: Modifier = Modifier) {
         }
 
         Text(text = "黃婉凌個人共同編輯程式")
+
     }
 }
